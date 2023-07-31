@@ -1,9 +1,8 @@
-from typing import List
+from typing import List, Tuple
 
 from sqlalchemy.exc import NoResultFound
 
-from app.domain.entities.restaurant import (CategoryEntity, MenuEntity,
-                                            ProductEntity)
+from app.domain.entities.restaurant import CategoryEntity, MenuEntity, ProductEntity
 from app.infrastructure.logger import Logger
 from app.repository.category_repository import CategoryRepository
 from app.repository.menu_repository import MenuRepository
@@ -29,14 +28,16 @@ class MenuService:
 
     async def create_menu_with_products_and_categories(
         self, categories: List[CategoryEntity], items: List[ProductEntity] = None
-    ) -> MenuEntity:
+    ) -> tuple[MenuEntity, list[ProductEntity] | None]:
         categories = await self.create_categories(categories=categories)
         if items:
             items = await self.create_products(items=items)
 
         log.info(f"Created categories: {categories} with {items}")
 
-        return await self.create_menu(categories=categories)
+        menu = await self.create_menu(categories=categories)
+
+        return menu, items
 
     @staticmethod
     async def create_categories(

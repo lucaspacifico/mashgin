@@ -4,7 +4,7 @@ from pydantic import ValidationError
 
 from app.const import ORDER_GET_DESCRIPTION
 from app.domain.entities.restaurant import CreateOrderRequest
-from app.domain.usecases.create_order import OrderUseCases
+from app.domain.usecases.order_use_cases import OrderUseCases
 
 order_router = APIRouter()
 
@@ -25,5 +25,13 @@ async def create_order(request: CreateOrderRequest):
 @order_router.get(
     "/order/{order_id}", tags=["Order"], description=ORDER_GET_DESCRIPTION
 )
-def get_order(order_id: int):
-    return {"order_id": order_id}
+async def get_order(order_id: int):
+    result = await OrderUseCases().get_order(order_id=order_id)
+
+    if not result:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Order Not Found",
+        )
+
+    return {"data": result}
