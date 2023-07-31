@@ -2,7 +2,8 @@ from typing import List
 
 from sqlalchemy.exc import NoResultFound
 
-from app.domain.entities.restaurant import CategoryEntity, ProductEntity, MenuEntity
+from app.domain.entities.restaurant import (CategoryEntity, MenuEntity,
+                                            ProductEntity)
 from app.infrastructure.logger import Logger
 from app.repository.category_repository import CategoryRepository
 from app.repository.menu_repository import MenuRepository

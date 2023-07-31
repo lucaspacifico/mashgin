@@ -1,10 +1,10 @@
 from typing import List
 
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.domain.entities.restaurant import CategoryEntity
 from app.infrastructure.orm_base import get_session
 from app.models.restaurant_models import Category as CategoryModel
-from app.domain.entities.restaurant import CategoryEntity
-
-from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class CategoryRepository:

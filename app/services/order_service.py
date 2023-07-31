@@ -1,16 +1,12 @@
 from typing import List
 
+from fastapi.exceptions import ValidationException
 from sqlalchemy.exc import NoResultFound
 
-from app.domain.entities.restaurant import (
-    ProductEntity,
-    OrderEntity,
-    PaymentEntity,
-)
+from app.domain.entities.restaurant import OrderEntity, PaymentEntity
 from app.infrastructure.logger import Logger
 from app.repository.order_repository import OrderRepository
 from app.repository.payment_repository import PaymentRepository
-from app.repository.product_repository import ProductRepository
 from app.services.product_service import ProductService
 from app.settings import Settings
 
@@ -19,23 +15,24 @@ log = Logger(class_name=__name__)
 
 
 class OrderService:
-
     async def create_order_with_payment(
-        self, payment_form: PaymentEntity, products_ids: List[int]
+        self, payment_form: PaymentEntity, product_ids: List[int]
     ) -> OrderEntity:
         payment = await self.get_or_create_payment(payment_form=payment_form)
 
-        products_id = self.validate_products_ids(products_ids)
+        is_valid = await self.is_valid_product_ids(product_ids)
+
+        if not is_valid:
+            raise ValidationException("Invalid product_id")
 
         order = OrderEntity(
-            payment_form=str(payment.id),
-            products=products_id,
-            price=payment.value
+            payment_method_id=str(payment.id),
+            products_id=product_ids,
+            price=payment.value,
         )
 
         log.info(f"Creating order {order} with payment {payment.id}")
         return await OrderRepository().add(data=order)
-
 
     @staticmethod
     async def get_order_by_id_or_last_order(order_id: int):
@@ -54,7 +51,12 @@ class OrderService:
         return await PaymentRepository().add(data=payment_form)
 
     @staticmethod
-    def validate_products_ids(products_id: List[int]) -> List[int]:
-        validated_products_id = await ProductService.validate_products(products_id=products_id)
+    async def is_valid_product_ids(product_ids: List[int]) -> bool:
+        existing_products_id = await ProductService.validate_products(
+            product_ids=product_ids
+        )
 
-        return validated_products_id
+        set_existing_products_id = set(existing_products_id)
+        set_product_ids = set(product_ids)
+
+        return set_product_ids.issubset(set_existing_products_id)

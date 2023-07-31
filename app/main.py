@@ -2,12 +2,11 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import PlainTextResponse
 
-from app.infrastructure.logger import Logger
-from app.settings import Settings
-
-from app.router.order_router import order_router
-from app.router.menu_router import menu_router
 from app.const import APP_DESCRIPTION
+from app.infrastructure.logger import Logger
+from app.router.menu_router import menu_router
+from app.router.order_router import order_router
+from app.settings import Settings
 
 log = Logger(class_name=__name__)
 

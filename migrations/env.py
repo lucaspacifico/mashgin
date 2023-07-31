@@ -2,26 +2,20 @@ import asyncio
 from logging.config import fileConfig
 
 from alembic import context
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+from sqlalchemy import engine_from_config, pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import AsyncEngine
 
 from app.infrastructure.orm_base import Base, create_db_uri
+from app.models.base import BaseDateTime
+from app.models.restaurant_models import (Category, Menu, Order, Payment,
+                                          Product)
 from app.settings import Settings
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 
 
-from app.models.restaurant_models import (
-    Category,
-    Menu,
-    Payment,
-    Product,
-    Order,
-)
-from app.models.base import BaseDateTime
 
 config = context.config
 

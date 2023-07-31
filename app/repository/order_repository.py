@@ -1,9 +1,9 @@
+from sqlalchemy import desc, select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.domain.entities.restaurant import OrderEntity
 from app.infrastructure.orm_base import get_session
 from app.models.restaurant_models import Order as OrderModel
-from app.domain.entities.restaurant import OrderEntity
-
-from sqlalchemy import select, desc
-from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class OrderRepository:

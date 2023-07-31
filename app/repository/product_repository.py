@@ -1,11 +1,14 @@
 from typing import List
 
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.domain.entities.restaurant import ProductEntity
+from app.infrastructure.logger import Logger
 from app.infrastructure.orm_base import get_session
 from app.models.restaurant_models import Product as ProductModel
-from app.domain.entities.restaurant import ProductEntity
-from sqlalchemy import select
 
-from sqlalchemy.ext.asyncio import AsyncSession
+log = Logger(__name__)
 
 
 class ProductRepository:
@@ -37,10 +40,10 @@ class ProductRepository:
             for product_orm in response_list_product_orm
         ]
 
-    async def get_by_ids(self, products_ids: List[int]) -> List[int]:
+    async def get_by_ids(self, product_ids: List[int]) -> List[int]:
         async with self.session.begin() as session:
-            statement = select(ProductModel.id).where(ProductModel.id._in(products_ids))
-            menu_orm = await session.execute(statement)
-        result = menu_orm.scalars().one()
+            statement = select(ProductModel.id).where(ProductModel.id.in_(product_ids))
+            product_orm = await session.execute(statement)
+            result = product_orm.scalars().all()
 
-        return result
+            return result

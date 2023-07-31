@@ -1,11 +1,7 @@
-from typing import List
-
+from sqlalchemy import ARRAY, BigInteger, Column, Integer, Numeric, String
 from sqlalchemy.ext.mutable import MutableList
 
 from app.infrastructure.orm_base import Base
-from sqlalchemy import BigInteger, Column, Numeric, String, ARRAY, Integer
-from sqlalchemy.orm import relationship, Mapped, mapped_column
-
 from app.models.base import BaseDateTime
 
 

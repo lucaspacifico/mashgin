@@ -1,10 +1,10 @@
+from fastapi import APIRouter, HTTPException, status
 from pydantic import ValidationError
 
 from app.const import MENU_GET_DESCRIPTION
-from app.infrastructure.logger import Logger
-from fastapi import APIRouter, HTTPException, status
 from app.domain.entities.restaurant import CreateMenuRequest
 from app.domain.usecases.create_menu import MenuUseCases
+from app.infrastructure.logger import Logger
 
 menu_router = APIRouter()
 log = Logger(class_name=__name__)

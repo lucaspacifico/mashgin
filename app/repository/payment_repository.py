@@ -1,9 +1,9 @@
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.domain.entities.restaurant import PaymentEntity
 from app.infrastructure.orm_base import get_session
 from app.models.restaurant_models import Payment as PaymentModel
-from app.domain.entities.restaurant import PaymentEntity
-
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
 
 
 class PaymentRepository:

@@ -2,13 +2,13 @@ from typing import Generator
 
 import pytest
 import pytest_asyncio
-from sqlalchemy import create_engine, text, event
+from sqlalchemy import create_engine, event, text
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
-from app.settings import Settings
 from app.infrastructure.orm_base import Base
+from app.settings import Settings
 
 settings = Settings()
 
