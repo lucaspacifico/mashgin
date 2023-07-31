@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
 from pydantic import ValidationError
+from sqlalchemy.exc import IntegrityError
 
 from app.const import MENU_GET_DESCRIPTION
 from app.domain.entities.restaurant import CreateMenuRequest
@@ -14,7 +15,7 @@ log = Logger(class_name=__name__)
 async def create_menu(request: CreateMenuRequest):
     try:
         menu, items = await MenuUseCases().create(data=request)
-    except ValidationError as exception:
+    except (ValidationError, IntegrityError) as exception:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Could not create menu, wrong arguments -- {str(exception)}",
