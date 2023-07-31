@@ -1,0 +1,38 @@
+version: '3.1'
+
+services:
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - ./:/app
+    ports:
+      - "8000:8000"
+    command: >
+      bash -c "alembic upgrade head; uvicorn app.main:app --host 0.0.0.0 --reload --port 8000"
+
+  db:
+    image: postgres
+    container_name: postgres_mashgin
+    restart: always
+    tty: true
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_MULTIPLE_DATABASES: mashgin, mashgin_test
+      POSTGRES_PASSWORD: secret1
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./devops/docker-postgresql-multiple-databases:/docker-entrypoint-initdb.d
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U admin" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:

@@ -1,0 +1,45 @@
+[tool.poetry]
+name = "mashgin"
+version = "0.0.1"
+description = "mashgin restaurant"
+authors = ["Lucas Pacífico <lucaspacifico95@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10.4"
+alembic = "^1.9.3"
+sqlalchemy = {extras = ["postgresql-asyncpg"], version = "^2.0.2"}
+fastapi = "^0.100.1"
+isort = "^5.12.0"
+autoflake = "^2.0.1"
+ruff = "^0.0.243"
+safety = "^2.3.4"
+black = "^23.1.0"
+uvicorn = {extras = ["standard"], version = "^0.20.0"}
+pathlib2 = "^2.3.7.post1"
+requests = "2.28.2"
+pytest = "^7.2.2"
+python-dotenv = "^0.21.1"
+pytest-mock = "^3.10.0"
+pydantic = {extras = ["email"], version = "^2.0.0"}
+pytest-asyncio = "^0.21.0"
+mock = "^5.0.1"
+psycopg2-binary = "^2.9.6"
+pydantic-settings = "2.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+pythonpath = [
+   "." ,"app"
+]
+
+testpaths = [
+  "tests"
+]
+
+env_files = [
+    ".env.local"
+]
