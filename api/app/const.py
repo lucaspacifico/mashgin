@@ -8,7 +8,7 @@ It also adopts the Repository Pattern to separate data access concerns from the 
 
 Domain Layer: The Domain Layer forms the core of the application and contains domain entities, aggregates, and value objects. 
 Infrastructure layer: The Infrastructure layer is responsable for defining the basics of the infra in the application. Example, the postgres database
-Models: Defines The Models layers is a strucutre of the models that will be used as datamodels by the entities.
+Models: Defines The Models layers is a structure of the models that will be used as datamodels by the entities.
 Repository Layer: The Repository Layer abstracts the data access logic from the rest of the application. Applying an abstraction from the SqlAlchemy.
 Service Layer: The Service Layer provides services that don't fit directly into the domain entities or use cases but are still relevant to the application.
 

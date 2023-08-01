@@ -33,8 +33,7 @@ app.include_router(order_router)
 
 @app.get("/", response_class=PlainTextResponse, tags=["Health"])
 async def main():
-    log.debug("teste")
-    return f"{settings.app_name} - {settings.app_description} -- Hello World"
+    return f"{settings.app_name} - {settings.app_description}"
 
 
 @app.get("/health", tags=["Health"])
