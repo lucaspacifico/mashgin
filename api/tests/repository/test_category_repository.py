@@ -6,12 +6,7 @@ from app.repository.product_repository import ProductRepository
 
 @pytest.fixture
 def product_entity():
-    return ProductEntity(
-        name="Some Name",
-        image_id="some_image_id",
-        price=16.6
-
-    )
+    return ProductEntity(name="Some Name", image_id="some_image_id", price=16.6)
 
 
 @pytest.mark.asyncio

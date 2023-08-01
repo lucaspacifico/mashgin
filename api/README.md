@@ -77,8 +77,8 @@ make run-backend-tests
 
 Points that I consider to be improved for the future and some decisions that were taken:
 
-- I didn't add many constraints to the database because I wasn't sure how the application might evolve in future stages. For this reason, the database ended up being more open to new ideas.
+- I didn't add many constraints to the database because I was not sure how the application might evolve in future stages. For this reason, the database ended up being more open to new ideas.
 - Apply dependency injection to some service layers and the repository. I did it in a simpler way to avoid the need for abstract classes or any additional complexity.
-- Increase test coverage.
+- Increase test coverage and fix the bugs that were found.
 - Include CI/CD routines in the code.
 - Improving the payment flow and its structure, I ended up putting a very basic payment flow because we would not have an information being processed. I ended up adding some parts to accept more than one payment method per order, but this is also an evolution for the future.
