@@ -24,3 +24,7 @@ MENU_GET_DESCRIPTION = (
 ORDER_GET_DESCRIPTION = (
     "If order_id equals to 0 ( zero ) it will be returned the last created order"
 )
+
+GET_ALL_ORDERS_DESCRIPTION = (
+    "Return all created orders"
+)

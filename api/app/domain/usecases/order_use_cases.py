@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from app.domain.entities.restaurant import CreateOrderRequest, OrderEntity
 from app.services.order_service import OrderService
@@ -18,3 +18,12 @@ class OrderUseCases:
         order = await OrderService().get_order_by_id_or_last_order(order_id=order_id)
 
         return order
+
+
+    @staticmethod
+    async def get_all_orders() -> List[OrderEntity]:
+        order = await OrderService().get_all_orders()
+
+        return order
+
+

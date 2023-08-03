@@ -18,6 +18,7 @@ class Product(BaseDateTime):
     name: str = Column(String, nullable=False, index=True)
     image_id: str = Column(String, nullable=False)
     price = Column(Numeric(precision=10, scale=2))
+    category_id: int = Column(Integer, nullable=False)
 
 
 class Order(BaseDateTime):

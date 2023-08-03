@@ -1,6 +1,7 @@
-from typing import Optional
+from typing import Optional, Tuple, Any, List
 
-from app.domain.entities.restaurant import CreateMenuRequest, MenuEntity, ProductEntity
+from app.domain.entities.restaurant import CreateMenuRequest, MenuEntity, ProductEntity, \
+    CategoryEntity
 from app.services.menu_service import MenuService
 
 
@@ -16,7 +17,7 @@ class MenuUseCases:
         return menu, items
 
     @staticmethod
-    async def get_menu(menu_id: int = None) -> Optional[MenuEntity]:
-        menu = await MenuService().get_menu_by_id_or_last_menu(menu_id=menu_id)
+    async def get_menu(menu_id: int = None) -> tuple[List[CategoryEntity], List[ProductEntity]]:
+        categories, products = await MenuService().get_menu_by_id_or_last_menu(menu_id=menu_id)
 
-        return menu
+        return categories, products

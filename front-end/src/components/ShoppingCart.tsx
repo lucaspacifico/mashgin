@@ -1,9 +1,12 @@
 import { useState } from "react";
-import { Button, Offcanvas, Stack } from "react-bootstrap";
+import { Button, Modal, Offcanvas, Stack } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { createOrder } from "../api/api";
 import { useShoppingCart } from "../context/ShoppingCartContext";
 import storeItems from "../data/items.json";
+import SuccessPage from "../pages/SuccessPage";
 import { PaymentEntity } from "../types/types";
-import { formatCurrency } from "../utilities/formatCurrency";
+import { formatCurrency } from "../utils/formatCurrency";
 import { CartItem } from "./CartItem";
 import PaymentFormModal from "./PaymentFormModal";
 
@@ -12,14 +15,34 @@ type ShoppingCartProps = {
 };
 
 export function ShoppingCart({ isOpen }: ShoppingCartProps) {
+  const navigate = useNavigate();
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleCheckout = () => {
     setShowPaymentModal(true);
   };
 
-  const handlePaymentSubmit = (payment: PaymentEntity) => {
-    // Perform actions with the payment data, e.g., process the payment
-    console.log("Payment data:", payment);
+  function refreshPage() {
+    window.location.reload();
+  }
+
+  const handlePaymentSubmit = async (payment: PaymentEntity) => {
+    setShowSuccessModal(true);
+
+    await createOrder(payment, cartItems);
+    setIsSubmitting(true);
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     setShowPaymentModal(false);
+
+    localStorage.setItem("shopping-cart", "[]");
+    navigate("/orders");
+
+    setIsSubmitting(false);
+  };
+
+  const handleSuccessModalClose = () => {
+    setShowSuccessModal(false);
   };
 
   const { closeCart, cartItems } = useShoppingCart();
@@ -59,6 +82,29 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
         onSubmit={handlePaymentSubmit}
         total_value={totalValue}
       />
+
+      <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Payment Success</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <SuccessPage onClose={handleSuccessModalClose} />
+        </Modal.Body>
+      </Modal>
+
+      {isSubmitting && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            zIndex: 9999,
+          }}
+        />
+      )}
     </Offcanvas>
   );
 }

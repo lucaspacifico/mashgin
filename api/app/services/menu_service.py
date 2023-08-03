@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Any, Tuple
 
 from sqlalchemy.exc import NoResultFound
 
@@ -50,10 +50,16 @@ class MenuService:
         return await ProductRepository().bulk_add(items)
 
     @staticmethod
-    async def get_menu_by_id_or_last_menu(menu_id: int):
+    async def get_menu_by_id_or_last_menu(menu_id: int) -> list[Any] | tuple[
+        Any, list[ProductEntity]]:
         try:
             if menu_id:
-                return await MenuRepository().get_by_id(menu_id=menu_id)
-            return await MenuRepository().last_menu()
+                menu = await MenuRepository().get_by_id(menu_id=menu_id)
+            else:
+                menu = await MenuRepository().last_menu()
         except NoResultFound:
             return []
+
+        categories = await CategoryRepository().get_by_categories_id(categories_id=menu.categories_id)
+        products = await ProductRepository().get_products_by_categories_id(categories_id=menu.categories_id)
+        return categories, products

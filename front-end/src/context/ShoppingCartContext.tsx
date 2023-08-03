@@ -6,7 +6,7 @@ type ShoppingCartProviderProps = {
   children: ReactNode
 }
 
-type CartItem = {
+export type CartItem = {
   id: number;
   quantity: number;
   current_price: number;
@@ -19,6 +19,7 @@ type ShoppingCartContext = {
   getItemQuantity: (id: number) => number;
   increaseCartQuantity: (id: number, price: number) => void;
   getItemCurrentPrice: (id: number) => number;
+  resetCart: () => void;
   decreaseCartQuantity: (id: number) => void;
   removeFromCart: (id: number) => void;
   cartQuantity: number;
@@ -30,6 +31,7 @@ const ShoppingCartContext = createContext({} as ShoppingCartContext);
 export function useShoppingCart() {
   return useContext(ShoppingCartContext);
 }
+
 export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [cartItems, setCartItems] = useLocalStorage<CartItem[]>(
@@ -47,6 +49,11 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
   function getItemQuantity(id: number) {
     return cartItems.find((item) => item.id === id)?.quantity || 0;
   }
+
+  const resetCart = () => {
+    setCartItems([]);
+    setIsOpen(false);
+  };
 
   function getItemCurrentPrice(id: number) {
     return cartItems.find((item) => item.id === id)?.current_price || 0;
@@ -112,6 +119,7 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
         removeFromCart,
         openCart,
         closeCart,
+        resetCart,
         cartItems,
         cartQuantity,
       }}

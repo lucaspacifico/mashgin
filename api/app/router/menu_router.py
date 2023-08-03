@@ -29,12 +29,12 @@ async def create_menu(request: CreateMenuRequest):
 
 @menu_router.get("/menu/{menu_id}", tags=["Menu"], description=MENU_GET_DESCRIPTION)
 async def get_menu(menu_id: int):
-    result = await MenuUseCases().get_menu(menu_id=menu_id)
+    categories, products = await MenuUseCases().get_menu(menu_id=menu_id)
 
-    if not result:
+    if not categories:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Menu Not Found",
         )
 
-    return {"data": result}
+    return {"categories": categories, "items": products}

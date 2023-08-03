@@ -1,3 +1,5 @@
+from typing import List, Any
+
 from sqlalchemy import desc, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -44,3 +46,15 @@ class OrderRepository:
         result = order_orm.scalars().one()
 
         return OrderEntity.model_validate(result)
+
+
+    async def get_all_orders(self) -> list[OrderEntity]:
+        async with self.session.begin() as session:
+            statement = (
+                select(OrderModel).order_by(desc(OrderModel.created_at))
+            )
+
+            order_orm = await session.execute(statement)
+        result = order_orm.scalars().all()
+
+        return [OrderEntity.model_validate(order) for order in result]

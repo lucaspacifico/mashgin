@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, status
 from fastapi.exceptions import ValidationException
 from pydantic import ValidationError
 
-from app.const import ORDER_GET_DESCRIPTION
+from app.const import ORDER_GET_DESCRIPTION, GET_ALL_ORDERS_DESCRIPTION
 from app.domain.entities.restaurant import CreateOrderRequest
 from app.domain.usecases.order_use_cases import OrderUseCases
 
@@ -27,6 +27,22 @@ async def create_order(request: CreateOrderRequest):
 )
 async def get_order(order_id: int):
     result = await OrderUseCases().get_order(order_id=order_id)
+
+    if not result:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Order Not Found",
+        )
+
+    return {"data": result}
+
+
+
+@order_router.get(
+    "/order/", tags=["Order"], description=GET_ALL_ORDERS_DESCRIPTION
+)
+async def get_all_orders():
+    result = await OrderUseCases().get_all_orders()
 
     if not result:
         raise HTTPException(

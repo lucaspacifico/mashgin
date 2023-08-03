@@ -1,9 +1,30 @@
+import { useEffect, useState } from "react";
+import { getLastMenuOrCreateMenu } from "../api/api";
 import CategoryComponent from "../components/CategoryItems";
-import initialMenuData from "../data/initial_menu.json";
 import { CreateMenuRequest } from "../types/types";
 
 export function Store() {
-  const menuData: CreateMenuRequest = initialMenuData;
+  const [menuData, setMenuData] = useState<CreateMenuRequest | null>(null);
+  const [isMenuDataFetched, setIsMenuDataFetched] = useState(false);
+
+  useEffect(() => {
+    if (!isMenuDataFetched) {
+      const fetchMenuData = async () => {
+        try {
+          const response = await getLastMenuOrCreateMenu();
+          setMenuData(response.data);
+        } catch (error) {
+          console.error("Error fetching menu data:", error);
+        }
+        setIsMenuDataFetched(true);
+      };
+      fetchMenuData();
+    }
+  }, [isMenuDataFetched]);
+
+  if (!menuData) {
+    return <div>Loading...</div>;
+  }
 
   const itemsByCategory: { [categoryId: number]: any } = {};
   menuData.items.forEach((item) => {
@@ -12,7 +33,6 @@ export function Store() {
     }
     itemsByCategory[item.category_id].push(item);
   });
-
 
   return (
     <>

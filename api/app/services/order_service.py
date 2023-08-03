@@ -44,6 +44,14 @@ class OrderService:
             return []
 
     @staticmethod
+    async def get_all_orders():
+        try:
+            return await OrderRepository().get_all_orders()
+        except NoResultFound:
+            return []
+
+
+    @staticmethod
     async def get_or_create_payment(payment_form: PaymentEntity) -> PaymentEntity:
         if payment_form.id:
             return await PaymentRepository().get_by_id(payment_id=payment_form.id)

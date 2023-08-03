@@ -1,4 +1,5 @@
 from typing import List
+from sqlalchemy import desc, select
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -36,3 +37,15 @@ class CategoryRepository:
             CategoryEntity.model_validate(category_orm)
             for category_orm in response_list_category_orm
         ]
+
+    async def get_by_categories_id(self, categories_id: List[int]) -> List[CategoryEntity]:
+        async with self.session.begin() as session:
+            statement = select(CategoryModel).where(CategoryModel.id.in_(categories_id))
+            product_orm = await session.execute(statement)
+            response_list_product_orm = product_orm.scalars().all()
+
+        return [
+            CategoryEntity.model_validate(product_orm)
+            for product_orm in response_list_product_orm
+        ]
+

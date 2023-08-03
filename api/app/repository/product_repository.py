@@ -47,3 +47,14 @@ class ProductRepository:
             result = product_orm.scalars().all()
 
             return result
+
+    async def get_products_by_categories_id(self, categories_id: List[int]) -> List[ProductEntity]:
+        async with self.session.begin() as session:
+            statement = select(ProductModel).where(ProductModel.category_id.in_(categories_id))
+            product_orm = await session.execute(statement)
+            response_list_product_orm = product_orm.scalars().all()
+
+        return [
+            ProductEntity.model_validate(product_orm)
+            for product_orm in response_list_product_orm
+        ]
