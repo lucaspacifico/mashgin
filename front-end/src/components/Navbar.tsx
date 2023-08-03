@@ -11,6 +11,9 @@ export function Navbar() {
           <Nav.Link to="/" as={NavLink}>
             Mashgin Restaurant
           </Nav.Link>
+          <Nav.Link to="/orders" as={NavLink}>
+            Orders
+          </Nav.Link>
         </Nav>
         {cartQuantity > 0 && (
           <Button
