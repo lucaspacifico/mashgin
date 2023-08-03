@@ -1,18 +1,31 @@
-import { Col, Row } from "react-bootstrap"
-import { StoreItem } from "../components/StoreItem"
-import storeItems from "../data/items.json"
+import CategoryComponent from "../components/CategoryItems";
+import initialMenuData from "../data/initial_menu.json";
+import { CreateMenuRequest } from "../types/types";
 
 export function Store() {
+  const menuData: CreateMenuRequest = initialMenuData;
+
+  const itemsByCategory: { [categoryId: number]: any } = {};
+  menuData.items.forEach((item) => {
+    if (!itemsByCategory[item.category_id]) {
+      itemsByCategory[item.category_id] = [];
+    }
+    itemsByCategory[item.category_id].push(item);
+  });
+
+
   return (
     <>
       <h1>Store</h1>
-      <Row md={2} xs={1} lg={3} className="g-3">
-        {storeItems.map(item => (
-          <Col key={item.id}>
-            <StoreItem {...item} />
-          </Col>
-        ))}
-      </Row>
+      {menuData.categories.map((category) => (
+        <CategoryComponent
+          key={category.id}
+          id={category.id}
+          image_id={category.image_id}
+          name={category.name}
+          items={itemsByCategory[category.id] || []}
+        />
+      ))}
     </>
-  )
+  );
 }

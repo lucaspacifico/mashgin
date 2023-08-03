@@ -12,11 +12,12 @@ export function CartItem({ id, quantity }: CartItemProps) {
   const { removeFromCart } = useShoppingCart()
   const item = storeItems.find(i => i.id === id)
   if (item == null) return null
+  const image_src = "/imgs/" + item.image_id + ".jpg";
 
   return (
     <Stack direction="horizontal" gap={2} className="d-flex align-items-center">
       <img
-        src={item.imgUrl}
+        src={image_src}
         style={{ width: "125px", height: "75px", objectFit: "cover" }}
       />
       <div className="me-auto">
@@ -41,5 +42,5 @@ export function CartItem({ id, quantity }: CartItemProps) {
         &times;
       </Button>
     </Stack>
-  )
+  );
 }
