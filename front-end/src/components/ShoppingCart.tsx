@@ -34,9 +34,9 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
     setIsSubmitting(true);
     await new Promise((resolve) => setTimeout(resolve, 2000));
     setShowPaymentModal(false);
-
     localStorage.setItem("shopping-cart", "[]");
     navigate("/orders");
+    refreshPage();
 
     setIsSubmitting(false);
   };
