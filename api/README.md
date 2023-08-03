@@ -2,7 +2,7 @@
 
 ## About
 
-The app is done by incorporating a few practices from Domain-Driven Design (DDD) and Repository Pattern on the server side, while utilizing the Vue.js framework on the client side.
+The app is done by incorporating a few practices from Domain-Driven Design (DDD) and Repository Pattern on the server side, while utilizing the React framework on the client side.
 
 > Server App with DDD, Repository Pattern:
 >
@@ -20,6 +20,11 @@ The app is done by incorporating a few practices from Domain-Driven Design (DDD)
 > - The client-side of the "Restaurant App" is built using the Vue.js framework, known for its simplicity, reactivity, and component-based architecture.
 
 ## API Documentation	
+
+### Entrypoint
+```shell
+http://localhost:8000/docs
+```
 
 ![api_documentation](/resources/api_documentation.png)
 
